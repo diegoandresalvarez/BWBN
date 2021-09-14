@@ -211,8 +211,8 @@ tot_diss_energy = diss_elastic_energy + x_k(:,4);
 figure;
 plot(tt,tot_diss_energy,'b');
 xlabel('Time (s)', 'FontSize', 16);
-ylabel('Dissipative energy (J/kg)', 'FontSize', 16);
-title('Time vs. Dissipative energy', 'FontSize', 18);
+ylabel('Dissipated energy (J/kg)', 'FontSize', 16);
+title('Time vs. Dissipated energy', 'FontSize', 18);
 grid on
 
 %% END
