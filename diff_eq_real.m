@@ -36,7 +36,7 @@ npar = numel(param);
 xd        = x(2);               % [mm/s]  system velocity
 z         = x(3);               % [mm]    hysteretic displacement
 e         = x(4);               % [J/kg]  dissipated energy = m^2/s^2
-w0        = param(1);           % [Hz]    natural frequency
+w0        = param(1);           % [rad/s] natural frequency
 xi        = param(2);           % damping ratio
 alpha     = param(3);           % alpha
 beta      = param(4);           % beta
