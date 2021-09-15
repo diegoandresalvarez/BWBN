@@ -66,31 +66,31 @@ switch type_u
     % Here we multiply by 1000 because of the units. The data at the 
     % laboratory was measured in 'kN', and we need acceleration in 'm/s^2'.
     load_kN = dlmread('data/load_kN.txt');
-    tt      = 0:0.02:(length(load_kN)*0.02)-0.02;    
+    t       = 0:0.02:(length(load_kN)*0.02)-0.02;    
     u       = 1000*load_kN/m;
   case 2
     % Here we multiply by 9.81 because of the units. The earthquake has
     % units of 'gravity', and we need acceleration in 'm/s^2'.
     u_m = dlmread('data/Northridge_1994_25_sec.txt');
-    tt  = u_m(:,1);
+    t   = u_m(:,1);
     u   = 9.81*u_m(:,2);
   case 3
     % Simulated input signal (sinusoidal case)
-    tt      = 0:0.02:20;
-    load_kN = tt.*sin(2*pi*tt);   % Load in 'kN'
+    t       = 0:0.02:20;
+    load_kN = t.*sin(2*pi*t);   % Load in 'kN'
     u       = 1000*load_kN/m;
   case 4
     % Here we multiply by 1000 because of the units. The data returned by
     % function 'generate_signal_astm' is in 'kN', and we need acceleration
     % in 'm/s^2'.
-    [tt, load_kN] = generate_signal_astm(20, 0.02);
-    u             = 1000*load_kN/m;
+    [t, load_kN] = generate_signal_astm(20, 0.02);
+    u            = 1000*load_kN/m;
   otherwise
     error('Invalid external excitation');
 end
 
-N       = length(u);                      % number of observations
-dt      = tt(2)-tt(1);                    % Runge-Kutta time step (sec)
+N       = length(u);                    % number of observations
+dt      = t(2)-t(1);                    % Runge-Kutta time step (sec)
 
 %% Setting Bouc-Wen parameters:
 xi        =   0.1798;
@@ -180,7 +180,7 @@ toc
 
 %% Displacement:
 figure;
-plot(tt,x_k(:,1),'b');
+plot(t,x_k(:,1),'b');
 xlabel('Time (s)', 'FontSize', 16);
 ylabel('Displacement (mm)', 'FontSize', 16);
 title('Time vs. Displacement', 'FontSize', 18);
@@ -203,16 +203,18 @@ grid on
 %
 % Rememeber that this is a cummulative measure.
 %
-diss_elastic_energy = 1e-6*alpha*(w0^2)*cumtrapz(tt, x_k(:,1).*x_k(:,2));
+diss_elastic_energy = 1e-6*alpha*(w0^2)*cumtrapz(t, x_k(:,1).*x_k(:,2));
 
 % tot_diss_energy = diss_elastic_energy + diss_hysteretic_energy
 tot_diss_energy = diss_elastic_energy + x_k(:,4);
 
 figure;
-plot(tt,tot_diss_energy,'b');
+plot(t,tot_diss_energy,'b');
 xlabel('Time (s)', 'FontSize', 16);
 ylabel('Dissipated energy (J/kg)', 'FontSize', 16);
 title('Time vs. Dissipated energy', 'FontSize', 18);
 grid on
+
+%save histeresis_4 t u Fz x_k tot_diss_energy
 
 %% END
